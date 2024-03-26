@@ -11,7 +11,7 @@ open class IDError: LocalizedError, Identifiable, Equatable {
     public let id = UUID().uuidString
     let message: String
     
-    init(message: String) {
+    public init(message: String) {
         self.message = message
     }
     

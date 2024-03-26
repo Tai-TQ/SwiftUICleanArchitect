@@ -14,7 +14,9 @@ public enum ViewState {
 
 open class ViewModel: ObservableObject {
     
-    @Published public var error: IDError? {
+    public init() {}
+    
+    @Published open var error: IDError? {
         didSet {
             if error != nil {
                 viewState = .loaded
@@ -22,7 +24,7 @@ open class ViewModel: ObservableObject {
         }
     }
     
-    @Published public var viewState: ViewState = .loaded
+    @Published open var viewState: ViewState = .loaded
     
     // MARK: - Loading
     private var currentAPILoadingCount = 0 {
@@ -35,11 +37,11 @@ open class ViewModel: ObservableObject {
         }
     }
     
-    func startLoading() {
+    open func startLoading() {
         currentAPILoadingCount += 1
     }
     
-    func endLoading() {
+    open func endLoading() {
         if currentAPILoadingCount == 0 {
             viewState = .loaded
         } else {
@@ -58,11 +60,11 @@ open class ViewModel: ObservableObject {
         }
     }
     
-    func startReloading() {
+    open func startReloading() {
         currentAPIReloadingCount += 1
     }
     
-    func endReloading() {
+    open func endReloading() {
         if currentAPIReloadingCount == 0 {
             viewState = .loaded
         } else {
@@ -71,7 +73,7 @@ open class ViewModel: ObservableObject {
     }
     
     // MARK: - HandleError
-    func handleError(_ error: Error) {
+    open func handleError(_ error: Error) {
         if let err = error as? IDError {
             self.error = err
         } else {

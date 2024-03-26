@@ -9,29 +9,23 @@ import Foundation
 import Combine
 
 public struct APIInput<T, Decoder> where T: Decodable, Decoder: TopLevelDecoder, Decoder.Input == Data {
-    var endpoint: Endpoint
+    public var endpoint: Endpoint
     let decodingType: T.Type
     let decoder: Decoder
-    let queue: DispatchQueue
-    let retries: Int
     
-    init(endpoint: Endpoint,
+    public init(endpoint: Endpoint,
          decodingType: T.Type,
-         decoder: Decoder = JSONDecoder(),
-         queue: DispatchQueue = .main,
-         retries: Int = 0) {
+         decoder: Decoder = JSONDecoder()) {
         self.endpoint = endpoint
         self.decodingType = decodingType
         self.decoder = decoder
-        self.queue = queue
-        self.retries = retries
     }
 }
 
 open class APIService {
     var session: URLSession
     
-    init(session: URLSession) {
+    public init(session: URLSession) {
         self.session = session
     }
     

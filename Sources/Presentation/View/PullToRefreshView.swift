@@ -15,7 +15,7 @@ public struct RefreshableScrollView<Content:View>: View {
     private var content: () -> Content
     private let threshold: CGFloat = 50.0
     
-    init(viewState: ViewState,
+    public init(viewState: ViewState,
          enableLoadMore: Bool,
          refreshAction: @escaping () async -> Void,
          loadMoreAction: @escaping () -> Void,

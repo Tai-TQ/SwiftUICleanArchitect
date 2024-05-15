@@ -74,6 +74,8 @@ open class ViewModel: ObservableObject {
     
     // MARK: - HandleError
     open func handleError(_ error: Error) {
+        currentAPILoadingCount = 0
+        currentAPIReloadingCount = 0
         if let err = error as? IDError {
             self.error = err
         } else {

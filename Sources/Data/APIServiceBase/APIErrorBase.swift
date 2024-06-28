@@ -15,7 +15,7 @@ public enum APIErrorBase: LocalizedError {
     case responseUnsuccessful
     case jsonParsingFailure
     
-    public var localizedDescription: String {
+    public var errorDescription: String {
         switch self {
         case .invalidRequest: return "Invalid Request"
         case .requestFailed: return "Request Failed"

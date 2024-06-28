@@ -78,6 +78,8 @@ open class ViewModel: ObservableObject {
         currentAPIReloadingCount = 0
         if let err = error as? IDError {
             self.error = err
+        } else if let error = error as? APIErrorBase {
+            self.error = IDError(message: error.errorDescription)
         } else {
             self.error = IDError(message: error.localizedDescription)
         }

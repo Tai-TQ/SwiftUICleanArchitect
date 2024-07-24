@@ -45,7 +45,7 @@ open class APIService {
             }
             guard (200..<300).contains(httpResponse.statusCode) else {
                 print("❌ [\(httpResponse.statusCode)] " + (response.url?.absoluteString ?? ""))
-                throw try mapResponseError(httpResponse: httpResponse, data: data)
+                throw try mapResponseError(httpResponse: httpResponse, data: data, input: input)
             }
             print("👍 [\(httpResponse.statusCode)] " + (response.url?.absoluteString ?? ""))
 
@@ -60,7 +60,7 @@ open class APIService {
         return input
     }
     
-    open func mapResponseError(httpResponse: HTTPURLResponse, data: Data) throws -> Error {
+    open func mapResponseError<T, Decoder>(httpResponse: HTTPURLResponse, data: Data, input: APIInput<T, Decoder>) throws -> Error {
         return APIErrorBase.responseUnsuccessful
     }
     

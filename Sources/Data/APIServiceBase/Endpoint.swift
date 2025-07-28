@@ -88,3 +88,32 @@ public extension Endpoint {
         return request
     }
 }
+
+open class BaseEndpoint: Endpoint {
+    public var urlString: String
+    public var method: HTTPMethod
+    public var requireAccessToken: Bool
+    public var headers: [String : Any]? = nil
+    public var queryItems: [String : Any]? = nil
+    public var body: [String : Any]? = nil
+    
+    public init(urlString: String,
+         method: HTTPMethod,
+         requireAccessToken: Bool,
+         headers: [String : Any]? = nil,
+         queryItems: [String : Any]? = nil,
+         body: [String : Any]? = nil) {
+        self.urlString = urlString
+        self.method = method
+        self.requireAccessToken = requireAccessToken
+        
+        var httpHeaders = [String : Any]()
+        headers?.forEach { (key, value) in
+            httpHeaders[key] = value
+        }
+        
+        self.headers = httpHeaders
+        self.queryItems = queryItems
+        self.body = body
+    }
+}

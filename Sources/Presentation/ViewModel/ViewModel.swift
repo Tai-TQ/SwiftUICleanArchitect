@@ -16,7 +16,7 @@ open class ViewModel: ObservableObject {
     
     public init() {}
     
-    @Published open var error: IDError? {
+    @Published open private (set) var error: IDError? {
         didSet {
             if error != nil {
                 viewState = .loaded
@@ -24,7 +24,7 @@ open class ViewModel: ObservableObject {
         }
     }
     
-    @Published open var viewState: ViewState = .loaded
+    @Published open private (set) var viewState: ViewState = .loaded
     
     // MARK: - Loading
     private var currentAPILoadingCount = 0 {
@@ -38,14 +38,18 @@ open class ViewModel: ObservableObject {
     }
     
     open func startLoading() {
-        currentAPILoadingCount += 1
+        Task { @MainActor in
+            currentAPILoadingCount += 1
+        }
     }
     
     open func endLoading() {
-        if currentAPILoadingCount == 0 {
-            viewState = .loaded
-        } else {
-            currentAPILoadingCount -= 1
+        Task { @MainActor in
+            if currentAPILoadingCount == 0 {
+                viewState = .loaded
+            } else {
+                currentAPILoadingCount -= 1
+            }
         }
     }
     
@@ -61,27 +65,33 @@ open class ViewModel: ObservableObject {
     }
     
     open func startReloading() {
-        currentAPIReloadingCount += 1
+        Task { @MainActor in
+            currentAPIReloadingCount += 1
+        }
     }
     
     open func endReloading() {
-        if currentAPIReloadingCount == 0 {
-            viewState = .loaded
-        } else {
-            currentAPIReloadingCount -= 1
+        Task { @MainActor in
+            if currentAPIReloadingCount == 0 {
+                viewState = .loaded
+            } else {
+                currentAPIReloadingCount -= 1
+            }
         }
     }
     
     // MARK: - HandleError
     open func handleError(_ error: Error) {
-        currentAPILoadingCount = 0
-        currentAPIReloadingCount = 0
-        if let err = error as? IDError {
-            self.error = err
-        } else if let error = error as? APIErrorBase {
-            self.error = IDError(message: error.errorDescription)
-        } else {
-            self.error = IDError(message: error.localizedDescription)
+        Task { @MainActor in
+            currentAPILoadingCount = 0
+            currentAPIReloadingCount = 0
+            if let err = error as? IDError {
+                self.error = err
+            } else if let error = error as? APIErrorBase {
+                self.error = IDError(message: error.errorDescription)
+            } else {
+                self.error = IDError(message: error.localizedDescription)
+            }
         }
     }
 }

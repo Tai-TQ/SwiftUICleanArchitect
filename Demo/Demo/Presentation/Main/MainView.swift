@@ -33,11 +33,11 @@ struct MainView: View {
                     
             }
         }
-        .overlay(alignment: .bottom, content: {
+        .overlay(alignment: .bottom) {
             VStack(spacing: 0) {
                 CustomTabBar(currentTab: selectable)
             }
-        })
+        }
         .onChange(of: navigationManager.path) { path in
             DispatchQueue.main.async {
                 navigationPath = NavigationPath()

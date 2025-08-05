@@ -11,6 +11,7 @@ import Lottie
 struct SplashView: View {
     @StateObject private var viewModel = SplashViewModel()
     @EnvironmentObject private var navigationManager: NavigationManager
+    @State private var opacity: Double = 0.0
     
     var body: some View {
         ZStack {
@@ -20,15 +21,19 @@ struct SplashView: View {
                 .playing(loopMode: .loop)
                 .frame(maxWidth: .infinity)
                 .offset(y: -60)
-            Text(viewModel.displayedText)
+            Text("Globe Wise")
                 .foregroundColor(.white)
                 .font(.system(size: 50, weight: .bold))
                 .offset(y: 80)
+                .opacity(opacity)
         }
         .ignoresSafeArea()
         .onAppear {
+            withAnimation(.easeIn(duration: 1.0)) {
+                opacity = 1.0
+            }
             Task {
-                await viewModel.startTypewriterAnimation()
+                await viewModel.checkAuthentication()
             }
         }
         .onChange(of: viewModel.navigateToMain) { newValue in
